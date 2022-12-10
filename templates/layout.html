@@ -4,16 +4,77 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>layout</title>
+    <title>Website Name: {% block title %}{% endblock title %}</title>
+    <!-- Style sheet-->
+    <link rel="stylesheet" href="/static/styles.css">
+    <!-- Javascript for pages-->
+    <script src="/static/scripts.js"></script>
+    <!-- Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
+
 <body>
-    <nav>
-        <div>
-            nav test
+    <!-- Nav Bar -->
+    <nav class="nav-bar">
+        <!-- website logo and menu slide out -->
+        <div class="nav-buttons-wrapper">
+            <button class="menu-button">
+                <ion-icon class="menu-button-icon" name="menu-outline"></ion-icon></ion-icon>
+            </button>
+            <a class="logo" href="/">Logo</a>
+        </div>
+        
+        <!-- Search bar -->
+        <div class="search-bar-wrapper">
+            <form class="search-bar" action="/search" method="get">
+                <input class="search-box" type="search" autocomplete="off" name="search" placeholder="Search">
+                <button class="search-button" type="submit">
+                    <ion-icon class="search-icon" name="search-outline"></ion-icon>
+                </button>
+            </form>
+        </div>
+
+        <div class="login-options">
+            {% if session["user_id"] %}
+                <a class="login-options-button" href="/signout">Sign Out</a>
+            {% else %}
+                <a class="login-options-button" href="/login">Login</a>
+                <a class="login-options-button" href="/register">Register</a>
+            {% endif %}
         </div>
     </nav>
+
+    <!-- Side Menu -->
+    <div class="nav-side">
+        <!-- Navigation buttons -->
+        <div class="side-nav-button-wrapper">
+            <a class="side-nav-button active-button" id="home-button" href="/">
+                <span class="side-nav-icon"><ion-icon name="home"></ion-icon></span>
+                <span class="side-nav-text">Home</span>
+            </a>
+            <a class="side-nav-button" id="profile-button" href="/profile">
+                <span class="side-nav-icon"><ion-icon name="person-outline"></ion-icon></span>
+                <span class="side-nav-text">Profile</span>
+            </a>
+            <a class="side-nav-button" id="friends-button" href="/friends">
+                <span class="side-nav-icon"><ion-icon name="people-outline"></ion-icon></span>
+                <span class="side-nav-text">Friends</span>
+            </a>
+            <a class="side-nav-button" id="liked-button" href="/liked">
+                <span class="side-nav-icon"><ion-icon name="heart-outline"></ion-icon></span>
+                <span class="side-nav-text">Liked</span>
+            </a>
+            <a class="side-nav-button" id="settings-button" href="/settings">
+                <span class="side-nav-icon"><ion-icon name="settings-outline"></ion-icon></span>
+                <span class="side-nav-text">Settings</span>
+            </a>
+        </div>
+    </div>
+
     <main>
-        {% block main %}{% endblock main %}
+        {% block main %}{% endblock main %}    
     </main>
+
 </body>
 </html>
