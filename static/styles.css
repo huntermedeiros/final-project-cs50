@@ -13,6 +13,7 @@
     --gray3: #272727;
     --gray4: #303030;
     --gray5: #a0a0a0;
+    --yellow-accent: #ffc400;
 }
 
 body {
@@ -136,6 +137,39 @@ body {
     align-items: center;
 }
 
+.post-button-wrapper {
+    padding: 10px 0px 10px 0px;
+    border-bottom: 1px solid #303030;
+}
+
+.post-button {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    width: 140px;
+    background-color: var(--yellow-accent);
+    color: var(--gray2);
+    font-size: 1.25rem;
+    text-decoration: none;
+    border-radius: 20px;
+}
+
+.post-button-icon {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.post-button-text {
+    padding: 5px 5px 5px 20px;
+    display: inline;
+}
+
+.side-nav-button-wrapper {
+    padding-top: 10px;
+}
+
 .side-nav-button {
     display: flex;
     align-items: center;
@@ -145,7 +179,6 @@ body {
     font-size: 1.25rem;
     text-decoration: none;
     border-radius: 10px;
-    
 }
 
 .active-button {
