@@ -55,27 +55,38 @@
             </a>
         </div>
         <!-- Profile stuff here -->
-
+        {% if session["user_id"] %}
+            <div class="profile-info-wrapper">
+                <a href="/profile">
+                    <span class="profile-image"></span>
+                </a>
+            </div>
+        {% endif %}
         <!-- Navigation buttons -->
         <div class="side-nav-button-wrapper">
-            <a class="side-nav-button active-button" id="home-button" href="/">
-                <span class="side-nav-icon"><ion-icon name="home"></ion-icon></span>
+            <!-- Home Button -->
+            <a class="side-nav-button {% if homeActive %} active-button {% endif %}" href="/">
+                <span class="side-nav-icon"><ion-icon name="{% if homeActive %}home{% else %}home-outline{% endif %}"></ion-icon></span>
                 <span class="side-nav-text">Home</span>
             </a>
-            <a class="side-nav-button" id="profile-button" href="/profile">
-                <span class="side-nav-icon"><ion-icon name="person-outline"></ion-icon></span>
+            <!-- Profile Button -->
+            <a class="side-nav-button {% if profileActive %} active-button {% endif %}" href="/profile">
+                <span class="side-nav-icon"><ion-icon name="{% if profileActive %}person{% else %}person-outline{% endif %}"></ion-icon></span>
                 <span class="side-nav-text">Profile</span>
             </a>
-            <a class="side-nav-button" id="friends-button" href="/friends">
-                <span class="side-nav-icon"><ion-icon name="people-outline"></ion-icon></span>
+            <!-- Friends Button -->
+            <a class="side-nav-button {% if friendsActive %}active-button{% endif %}" href="/friends">
+                <span class="side-nav-icon"><ion-icon name="{% if friendsActive %}people{% else %}people-outline{% endif %}"></ion-icon></span>
                 <span class="side-nav-text">Friends</span>
             </a>
-            <a class="side-nav-button" id="liked-button" href="/liked">
-                <span class="side-nav-icon"><ion-icon name="heart-outline"></ion-icon></span>
+            <!-- Liked Button -->
+            <a class="side-nav-button {% if likedActive %}active-button{% endif %}" href="/liked">
+                <span class="side-nav-icon"><ion-icon name="{% if likedActive %}heart{% else %}heart-outline{% endif %}"></ion-icon></span>
                 <span class="side-nav-text">Liked</span>
             </a>
-            <a class="side-nav-button" id="settings-button" href="/settings">
-                <span class="side-nav-icon"><ion-icon name="settings-outline"></ion-icon></span>
+            <!-- Settings Button -->
+            <a class="side-nav-button {% if settingsActive %}active-button{% endif %}" href="/settings">
+                <span class="side-nav-icon"><ion-icon name="{% if settingsActive %}settings-sharp{% else %}settings-outline{% endif %}"></ion-icon></span>
                 <span class="side-nav-text">Settings</span>
             </a>
         </div>
