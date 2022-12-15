@@ -36,4 +36,53 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
+    // Opens login/register screen
+    const pageMask = document.querySelector('.page-mask');
+    const signInScreen = document.querySelector('.sign-in-screen');
+    const registerScreen = document.querySelector('.register-screen');
+    const signInButton = document.querySelector("#sign-in");
+    var currentPage = 0;
+
+    signInButton.addEventListener('click', function(){
+        pageMask.classList.toggle('inactive');
+        signInScreen.classList.toggle('inactive');
+        currentPage = 1;
+    });
+    
+    const registerButton = document.querySelector("#register");
+    registerButton.addEventListener('click', function(){
+        pageMask.classList.toggle('inactive');
+        registerScreen.classList.toggle('inactive');
+        currentPage = 2;
+    });
+
+    // Closes login/register screen
+    const closeButtons = document.querySelectorAll('.login-close');
+    for (let i = 0; i < closeButtons.length; i++)    
+        closeButtons[i].addEventListener('click', function() {
+            pageMask.classList.toggle('inactive');
+            if (currentPage == 1) {
+                signInScreen.classList.toggle('inactive');
+            }
+            else if (currentPage == 2) {
+                registerScreen.classList.toggle('inactive');
+            }
+            currentPage = 0;
+    });
+
+    // Switches the screen based on which screen user is on
+    const registerButtonFooter = document.querySelector('.register-button');
+    registerButtonFooter.addEventListener('click', function() {
+        signInScreen.classList.toggle('inactive');
+        registerScreen.classList.toggle('inactive');
+        currentPage = 2;
+    });
+
+    const signInButtonFooter = document.querySelector('.signin-button');
+    signInButtonFooter.addEventListener('click', function() {
+        registerScreen.classList.toggle('inactive');
+        signInScreen.classList.toggle('inactive');
+        currentPage = 1;
+    });
+
 });

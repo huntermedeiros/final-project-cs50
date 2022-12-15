@@ -6,14 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Name: {% block title %}{% endblock title %}</title>
     <!-- Style sheet-->
-    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="/static/layout-styles.css">
     <!-- Javascript for pages-->
     <script src="/static/scripts.js"></script>
     <!-- Icons -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </head>
-
+    
 <body>
     <!-- Nav Bar -->
     <nav class="nav-bar">
@@ -39,8 +39,8 @@
             {% if session["user_id"] %}
                 <a class="login-options-button" href="/signout">Sign Out</a>
             {% else %}
-                <a class="login-options-button" href="/login">Login</a>
-                <a class="login-options-button" href="/register">Register</a>
+                <a class="login-options-button" id="sign-in" href="#">Sign in</a>
+                <a class="login-options-button" id="register" href="#">Register</a>
             {% endif %}
         </div>
     </nav>
@@ -92,9 +92,90 @@
         </div>
     </div>
 
+    <!-- Main Content -->
     <main>
         {% block main %}{% endblock main %}    
     </main>
+
+    <!-- Login Popup -->
+    {% if not session["user_id"] %}
+    <div class="page-mask inactive">
+        <!-- Login -->
+        <div class="login-popup sign-in-screen inactive">
+            <!-- Login Heading -->
+            <div class="login-heading">
+                <h1>Sign In</h1>
+                <button class="login-close">
+                    <span class="login-close-icon"><ion-icon name="close-outline"></ion-icon></span>
+                </button>
+            </div>
+            <!-- Login Form -->
+            <form class="login-form" action="/login" method="post">
+                <div class="login-input">
+                    <span class="login-icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <input class="login-text-box" type="text" name="username" placeholder="Username" autocomplete="off">
+                </div>
+                <div class="login-input">
+                    <span class="login-icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                    <input class="login-text-box" type="text" name="password" placeholder="Password" autocomplete="off">
+                </div>
+                <button class="submit-button" type="submit">Submit</button>
+            </form>
+            <!-- Login Footer -->
+            <div class="login-footer">
+                <h4>Dont have an account?</h6>
+                <a class="login-switch-button register-button" href="#">Register</a>
+            </div>
+        </div>
+        <!-- Register -->
+        <div class="login-popup register-screen inactive ">
+            <!-- Login Heading -->
+            <div class="login-heading">
+                <h1>Register</h1>
+                <button class="login-close">
+                    <span class="login-close-icon"><ion-icon name="close-outline"></ion-icon></span>
+                </button>
+            </div>
+            <!-- Login Form -->
+            <form class="login-form" action="/register" method="post">
+                <div class="login-input">
+                    <span class="login-icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <input class="login-text-box" type="text" name="username" placeholder="Username" autocomplete="off">
+                </div>
+                <div class="login-input">
+                    <span class="login-icon"><ion-icon name="person-outline"></ion-icon></span>
+                    <input class="login-text-box" type="text" name="name" placeholder="Name" autocomplete="off">
+                </div>
+                <div class="login-input">
+                    <span class="login-icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                    <input class="login-text-box" type="text" name="password" placeholder="Password" autocomplete="off">
+                </div>
+                <div class="login-input">
+                    <span class="login-icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
+                    <input class="login-text-box" type="text" name="confirmation" placeholder="Confirm Password" autocomplete="off">
+                </div>
+                <button class="submit-button" type="submit">Submit</button>
+            </form>
+            <!-- Login Footer -->
+            <div class="login-footer">
+                <h4>Already have an account?</h4>
+                <a class="login-switch-button signin-button" href="#">Sign in</a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+                <script> 
+                    document.addEventListener('DOMContentLoaded', function() {
+                        alert('{{message}}');
+                    });
+                </script> 
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
 </body>
 </html>
