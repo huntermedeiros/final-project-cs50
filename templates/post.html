@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block main %}
-    <p>
-        post test
-    </p>
+    <form action="/post" method="post">
+        <input type="text" name="post-content" placeholder="Post">
+        <button type="submit">Post</button>
+    </form>
 {% endblock main %}

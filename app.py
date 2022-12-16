@@ -14,12 +14,15 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
+# Configure Database
 db = SQL("sqlite:///database.db")
+
 
 @app.route("/")
 def index():
     return render_template("index.html", homeActive = True)
 
+# Users Page Implemented
 @app.route("/user/<username>")
 @login_required
 def user(username):
@@ -95,7 +98,7 @@ def signout():
     return redirect("/")
 
 # Implemented Login
-@app.route("/login", methods=["POST"])
+@app.post("/login")
 def login():
     session.clear()
     username = request.form.get("username")
@@ -115,7 +118,7 @@ def login():
     return redirect("/")
 
 # Implemented Register
-@app.route("/register", methods=["POST"])
+@app.post("/register")
 def register():
     username = request.form.get("username")
     name = request.form.get("name")
@@ -143,10 +146,16 @@ def register():
     session["username"] = username
     return redirect("/")
 
-@app.route("/post")
+@app.route("/post", methods=["GET", "POST"])
 @login_required
 def post():
-    return render_template("post.html")
+    if request.method == "GET":
+        return render_template("post.html")
+    if request.method == "POST":
+        postContent = request.form.get("post-content")
+        time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
+        db.execute("INSERT INTO posts (user_id, post, date) VALUES (?, ?, ?)", session["user_id"], postContent, time)
+        return redirect("/")
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
