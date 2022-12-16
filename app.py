@@ -157,6 +157,13 @@ def post():
         db.execute("INSERT INTO posts (user_id, post, date) VALUES (?, ?, ?)", session["user_id"], postContent, time)
         return redirect("/")
 
-@app.route("/search", methods=["GET", "POST"])
+@app.route("/search")
 def search():
-    return render_template("search.html")
+    search = request.args.get("search")
+    print(search)
+    resultsUsers = db.execute("SELECT username, name FROM users WHERE username LIKE ? OR name LIKE ?", "%" + search + "%", "%" + search + "%")
+    print(resultsUsers)
+    resultsPosts = db.execute("SELECT * FROM posts WHERE post LIKE ?", "%" + search + "%")
+    print(resultsPosts)
+
+    return render_template("search.html", resultsUsers=resultsUsers, resultsPosts=resultsPosts)

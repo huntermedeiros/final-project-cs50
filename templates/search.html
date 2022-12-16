@@ -5,7 +5,27 @@
 {% endblock %}
 
 {% block main %}
-    <p>
-        search test
-    </p>
+<div style="display: flex; flex-direction: column;">
+    {% if resultsUsers %}
+        {% for users in resultsUsers %}
+            <a href="/user/{{ users.username }}">@{{ users.username }} | {{ users.name }}</a>
+        {% endfor %}
+
+    {% else %}
+        <p> No users </p>
+    {% endif %}
+</div>
+    
+<div>
+    {% if resultsPosts %}
+        {% for posts in resultsPosts %}
+            <p>{{ posts.post }} </p>
+            <p>{{ posts.date }} </p>
+        {% endfor %}
+
+    {% else %}
+        <p> No posts</p>
+    {% endif %}
+</div>
+    
 {% endblock main %}

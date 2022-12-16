@@ -28,13 +28,14 @@
         <!-- Search bar -->
         <div class="search-bar-wrapper">
             <form class="search-bar" action="/search" method="get">
-                <input class="search-box" type="search" autocomplete="off" name="search" placeholder="Search">
+                <input class="search-box" type="text" autocomplete="off" name="search" placeholder="Search">
                 <button class="search-button" type="submit">
                     <ion-icon class="search-icon" name="search-outline"></ion-icon>
                 </button>
             </form>
         </div>
 
+        <!-- Login Options -->
         <div class="login-options">
             {% if session["user_id"] %}
                 <a class="login-options-button" href="/signout">Sign Out</a>
