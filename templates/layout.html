@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Name: {% block title %}{% endblock title %}</title>
     <!-- Style sheet-->
-    <link rel="stylesheet" href="/static/layout-styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
     <!-- Javascript for pages-->
     <script src="/static/scripts.js"></script>
     <!-- Icons -->
@@ -54,14 +54,20 @@
                 <span class="post-button-text">Post</span>
             </a>
         </div>
+
         <!-- Profile stuff here -->
         {% if session["user_id"] %}
-            <div class="profile-info-wrapper">
-                <a href="/profile">
-                    <span class="profile-image"></span>
+            <div class="account-info-wrapper">
+                <a class="account-info-button" href="/user/{{ session['username'] }}">
+                    <span class="side-nav-icon"><ion-icon name="person"></ion-icon></span>
+                    <div class="account-info-text">
+                        <span class="side-nav-text">@{{ session["username"] }}</span>
+                        <span class="side-nav-text">name</span>
+                    </div>
                 </a>
             </div>
         {% endif %}
+
         <!-- Navigation buttons -->
         <div class="side-nav-button-wrapper">
             <!-- Home Button -->
@@ -69,26 +75,25 @@
                 <span class="side-nav-icon"><ion-icon name="{% if homeActive %}home{% else %}home-outline{% endif %}"></ion-icon></span>
                 <span class="side-nav-text">Home</span>
             </a>
-            <!-- Profile Button -->
-            <a class="side-nav-button {% if profileActive %} active-button {% endif %}" href="/profile">
-                <span class="side-nav-icon"><ion-icon name="{% if profileActive %}person{% else %}person-outline{% endif %}"></ion-icon></span>
-                <span class="side-nav-text">Profile</span>
-            </a>
-            <!-- Friends Button -->
-            <a class="side-nav-button {% if friendsActive %}active-button{% endif %}" href="/friends">
-                <span class="side-nav-icon"><ion-icon name="{% if friendsActive %}people{% else %}people-outline{% endif %}"></ion-icon></span>
-                <span class="side-nav-text">Friends</span>
-            </a>
-            <!-- Liked Button -->
-            <a class="side-nav-button {% if likedActive %}active-button{% endif %}" href="/liked">
-                <span class="side-nav-icon"><ion-icon name="{% if likedActive %}heart{% else %}heart-outline{% endif %}"></ion-icon></span>
-                <span class="side-nav-text">Liked</span>
-            </a>
-            <!-- Settings Button -->
-            <a class="side-nav-button {% if settingsActive %}active-button{% endif %}" href="/settings">
-                <span class="side-nav-icon"><ion-icon name="{% if settingsActive %}settings-sharp{% else %}settings-outline{% endif %}"></ion-icon></span>
-                <span class="side-nav-text">Settings</span>
-            </a>
+
+            {% if session["user_id"] %}
+                <!-- Profile Button -->
+                <a class="side-nav-button {% if isUsersAccount %} active-button {% endif %}" href="/user/{{ session['username'] }}">
+                    <span class="side-nav-icon"><ion-icon name="{% if isUsersAccount %}person{% else %}person-outline{% endif %}"></ion-icon></span>
+                    <span class="side-nav-text">Profile</span>
+                </a>
+                <!-- Friends Button -->
+                <a class="side-nav-button {% if friendsActive %}active-button{% endif %}" href="/friends">
+                    <span class="side-nav-icon"><ion-icon name="{% if friendsActive %}people{% else %}people-outline{% endif %}"></ion-icon></span>
+                    <span class="side-nav-text">Friends</span>
+                </a>
+                <!-- Liked Button -->
+                <a class="side-nav-button {% if likedActive %}active-button{% endif %}" href="/liked">
+                    <span class="side-nav-icon"><ion-icon name="{% if likedActive %}heart{% else %}heart-outline{% endif %}"></ion-icon></span>
+                    <span class="side-nav-text">Liked</span>
+                </a>
+            {% endif %}
+
         </div>
     </div>
 
@@ -117,7 +122,7 @@
                 </div>
                 <div class="login-input">
                     <span class="login-icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-                    <input class="login-text-box" type="text" name="password" placeholder="Password" autocomplete="off">
+                    <input class="login-text-box" type="password" name="password" placeholder="Password" autocomplete="off">
                 </div>
                 <button class="submit-button" type="submit">Submit</button>
             </form>
@@ -148,11 +153,11 @@
                 </div>
                 <div class="login-input">
                     <span class="login-icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-                    <input class="login-text-box" type="text" name="password" placeholder="Password" autocomplete="off">
+                    <input class="login-text-box" type="password" name="password" placeholder="Password" autocomplete="off">
                 </div>
                 <div class="login-input">
                     <span class="login-icon"><ion-icon name="lock-closed-outline"></ion-icon></span>
-                    <input class="login-text-box" type="text" name="confirmation" placeholder="Confirm Password" autocomplete="off">
+                    <input class="login-text-box" type="password" name="confirmation" placeholder="Confirm Password" autocomplete="off">
                 </div>
                 <button class="submit-button" type="submit">Submit</button>
             </form>

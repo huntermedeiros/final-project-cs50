@@ -3,8 +3,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const menuButton = document.querySelector(".menu-button");
     const postButton = document.querySelector(".post-button");
     const postButtonText = document.querySelector(".post-button-text");
+    // Issues with these when not logged in
     const sideNavText = document.querySelectorAll(".side-nav-text");
     const sideNavButtons = document.querySelectorAll(".side-nav-button");
+    const accountInfo = document.querySelector(".account-info-button");
 
     // Expands and shrinks the side nav bar
     var sideNavState = false;
@@ -13,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sideNavState = false;
             postButton.style.width = '40px';
             postButtonText.style.display = 'none';
+            accountInfo.style.width = '40px';
             for (let i = 0; i < sideNavButtons.length; i++) {
                 sideNavButtons[i].style.width = '40px';
             }
@@ -25,6 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             sideNavState = true;
             postButton.style.width = '140px';
             postButtonText.style.display = 'inline';
+            accountInfo.style.width = '140px';
             for (let i = 0; i < sideNavButtons.length; i++) {
                 sideNavButtons[i].style.width = '140px';
             }

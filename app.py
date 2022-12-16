@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, flash, request, session
+from flask import Flask, render_template, redirect, url_for, flash, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from cs50 import SQL
@@ -20,10 +20,62 @@ db = SQL("sqlite:///database.db")
 def index():
     return render_template("index.html", homeActive = True)
 
-@app.route("/profile")
+@app.route("/user/<username>")
 @login_required
-def profile():
-    return render_template("profile.html", profileActive = True)
+def user(username):
+    # Checks the users info
+    userInfo = db.execute("SELECT id, username, name, follower_count, following_count FROM users WHERE username LIKE ?", username)
+    if not userInfo:
+        flash("User does not exist")
+        return redirect("/")
+    userPosts = db.execute("SELECT * FROM posts WHERE user_id = ?", userInfo[0]['id'])
+    # Checks if this is the users account
+    if username == session["username"]:
+        isUsersAccount = True
+        isFollowing = None
+    else:
+        isUsersAccount = False
+        # If this is not the users account then check if theyre following this account
+        if db.execute("SELECT * FROM following WHERE user_id = ? AND follower_id = ?", userInfo[0]['id'], session['user_id']) :
+            isFollowing = True
+        else:
+            isFollowing = False
+        print(isFollowing)
+    return render_template("user.html", userInfo=userInfo[0], userPosts=userPosts, isUsersAccount=isUsersAccount, isFollowing=isFollowing)
+
+# follow implemented
+@app.get('/follow/<followed>')
+@login_required
+def follow(followed):
+    # Gets user being followed username and id
+    followedInfo = db.execute("SELECT id, username FROM users WHERE username LIKE ?", followed)[0]
+    # Check if they are already being followed
+    if db.execute("SELECT * FROM following WHERE user_id = ? AND follower_id = ?", followedInfo["id"], session["user_id"]):
+        return redirect(url_for("user", username=followedInfo["username"]))
+    # Add who has been followed to the following table
+    db.execute("INSERT INTO following VALUES (?, ?)", followedInfo["id"], session["user_id"])
+    # Updates follower count of user being followed
+    db.execute("UPDATE users SET follower_count = follower_count + 1 WHERE id = ?", followedInfo["id"])
+    # Updates following count of user following
+    db.execute("UPDATE users SET following_count = following_count + 1 WHERE id = ?", session["user_id"])
+    return redirect(url_for("user", username=followedInfo["username"]))
+
+# unfollowed implemented
+@app.get('/unfollow/<unfollowed>')
+@login_required
+def unfollow(unfollowed):
+    # Gets unfollowed users id and username
+    unfollowedInfo = db.execute("SELECT id, username FROM users WHERE username LIKE ?", unfollowed)[0]
+    # Check if user is following this account
+    if not db.execute("SELECT * FROM following WHERE user_id = ? AND follower_id = ?", unfollowedInfo["id"], session["user_id"]):
+        return redirect(url_for("user", username=unfollowedInfo["username"]))
+    # Add who has been followed to the following table
+    db.execute("DELETE FROM following WHERE user_id = ? AND follower_id = ?", unfollowedInfo["id"], session["user_id"])
+    # Updates follower count of user being unfollowed
+    db.execute("UPDATE users SET follower_count = follower_count - 1 WHERE id = ?", unfollowedInfo["id"])
+    # Updates following count of user unfollowing
+    db.execute("UPDATE users SET following_count = following_count - 1 WHERE id = ?", session["user_id"])
+    return redirect(url_for("user", username=unfollowedInfo["username"]))
 
 @app.route("/friends")
 @login_required
@@ -35,16 +87,14 @@ def friends():
 def liked():
     return render_template("liked.html", likedActive = True)
 
-@app.route("/settings")
-@login_required
-def settings():
-    return render_template("settings.html", settingsActive = True)
-
+# Implemented Signout
 @app.route("/signout")
+@login_required
 def signout():
     session.clear()
     return redirect("/")
 
+# Implemented Login
 @app.route("/login", methods=["POST"])
 def login():
     session.clear()
@@ -61,8 +111,10 @@ def login():
         flash("Invalid username and/or password")
         return redirect("/")
     session["user_id"] = rows[0]["id"]
+    session["username"] = username
     return redirect("/")
 
+# Implemented Register
 @app.route("/register", methods=["POST"])
 def register():
     username = request.form.get("username")
@@ -88,6 +140,7 @@ def register():
 
     currentUser = db.execute("INSERT INTO users (username, name, password_hash) VALUES (?, ?, ?)", username, name, password_hash)
     session["user_id"] = currentUser
+    session["username"] = username
     return redirect("/")
 
 @app.route("/post")
