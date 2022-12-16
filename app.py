@@ -40,7 +40,6 @@ def user(username):
             isFollowing = True
         else:
             isFollowing = False
-        print(isFollowing)
     return render_template("user.html", userInfo=userInfo[0], userPosts=userPosts, isUsersAccount=isUsersAccount, isFollowing=isFollowing)
 
 # follow implemented
@@ -80,7 +79,8 @@ def unfollow(unfollowed):
 @app.route("/friends")
 @login_required
 def friends():
-    return render_template("friends.html", friendsActive = True)
+    friendsList = db.execute("SELECT username, name FROM users JOIN following ON users.id=following.user_id WHERE follower_id = ?", session["user_id"])
+    return render_template("friends.html", friendsActive = True, friendsList=friendsList)
 
 @app.route("/liked")
 @login_required

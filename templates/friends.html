@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block main %}
-    <p>
-        friends test
-    </p>
+    {% for friends in friendsList %}
+        <a href="/user/{{ friends.username }}">@{{ friends.username }} | {{ friends.name }} </a>
+    {% endfor %}
 {% endblock main %}
