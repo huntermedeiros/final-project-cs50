@@ -34,15 +34,27 @@
     - The profile's information
       - This shows the name of the profile, the profile username, and the following/follower count.
       - This also shows an unfollow or follow button based on wether or not the current user is following them
-        - If it is the users own account it will not show anything
-        - if I come back to this app later I will add an option for being able to change the user's username, and name as well as any other parts of the account that could be added later
+        - If it is the users own account it will not show anything.
+        - if I come back to this app later I will add an option for being able to change the user's username, and name as well as any other parts of the account that could be added later.
     - The profile's posts
-      - It shows the users username and name as well as date it was posted
-      - And the text the user has posted
+      - It shows the users username and name as well as date it was posted.
+      - And the text the user has posted.
       - If i come back to this app later I would like to add the option for other users to like the post and also the ability for users to delete their own posts.
 - friends.html
-  - Shows the current user a list of all of the users they are following including those users how many people they are following and the amount of followers they have
+  - Shows the current user a list of all of the users they are following including those users how many people they are following and the amount of followers they have.
 - post.html
   - This is where the user can type anything they want to post
 - search.html
-  - This is shown after the user has entered something into the search bar at the top of the page
+  - This is shown after the user has entered something into the search bar at the top of the page.
+  - Takes information from the database to find any users or posts that contain the same words that the user entered.
+  - A feature that I would like to add at a later date is to only show a max of three users with the ability to see more based on the words that the user searched.
+##### Static
+- scripts.js
+  - This holds all of the javascript for the layout.
+  - It handles the ability to open and close the side nav bar as well as opening the register and sign in prompts.
+- styles.css
+  - Handles all css for app.
+##### App
+- This is the flask app that handles all of the main fuctionality of the application.
+- Most of it is explained in the file.
+
