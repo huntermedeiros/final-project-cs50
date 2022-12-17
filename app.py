@@ -17,7 +17,6 @@ Session(app)
 # Configure Database
 db = SQL("sqlite:///database.db")
 
-
 @app.route("/")
 def index():
     friendsposts = None
@@ -31,6 +30,7 @@ def index():
 def user(username):
     # Checks the users info
     userInfo = db.execute("SELECT id, username, name, follower_count, following_count FROM users WHERE username LIKE ?", username)
+    # Checks if user exists
     if not userInfo:
         flash("User does not exist")
         return redirect("/")
@@ -83,35 +83,38 @@ def unfollow(unfollowed):
 @app.route("/friends")
 @login_required
 def friends():
+    # Grabs a list of the people the user follows
     friendsList = db.execute("SELECT username, name, follower_count, following_count FROM users JOIN following ON users.id=following.user_id WHERE follower_id = ?", session["user_id"])
     return render_template("friends.html", friendsActive = True, friendsList=friendsList)
-
-@app.route("/liked")
-@login_required
-def liked():
-    return render_template("liked.html", likedActive = True)
 
 @app.route("/signout")
 @login_required
 def signout():
+    # Clears session
     session.clear()
     return redirect("/")
 
 @app.post("/login")
 def login():
     session.clear()
+    # Gets username and password from form
     username = request.form.get("username")
     password = request.form.get("password")
+    # Checks if username was given
     if not username:
         flash('Please provide username')
         return redirect("/")
+    # Checks if password was given
     if not password:
         flash('Please provide password')
         return redirect("/")
+    # Gets info on user from database
     rows = db.execute("SELECT * FROM users WHERE username = ?", username)
+    # Checks if that user exists and if the password hash matches
     if len(rows) != 1 or not check_password_hash(rows[0]["password_hash"], password):
         flash("Invalid username and/or password")
         return redirect("/")
+    # If complete the user is logged in and their info is stored to session
     session["user_id"] = rows[0]["id"]
     session["username"] = username
     session["name"] = rows[0]['name']
@@ -119,28 +122,35 @@ def login():
 
 @app.post("/register")
 def register():
+    # Stores username, name, passwords, and confirmation
     username = request.form.get("username")
     name = request.form.get("name")
     password = request.form.get("password")
     confirmation = request.form.get("confirmation")
+    # Checks if username has been inputed
     if not username:
         flash('Please provide username')
         return redirect("/")
+    # Checks if the username has already been taken
     if db.execute("SELECT username FROM users WHERE username LIKE ?", username):
         flash('Username taken')
         return redirect("/")
+    # Checks if password is there
     if not password:
         flash('Please provide password')
         return redirect("/")
+    # Checks if confirmation is there
     if not confirmation:
         flash('Please confirm password')
         return redirect("/")
+    # Checks if the confirmation matches the password
     if confirmation != password:
         flash('Passwords do not match')
         return redirect("/")
     password_hash = generate_password_hash(password)
 
     currentUser = db.execute("INSERT INTO users (username, name, password_hash) VALUES (?, ?, ?)", username, name, password_hash)
+    # Stores id of user, username, and name of the current user
     session["user_id"] = currentUser
     session["username"] = username
     session["name"] = name
@@ -152,11 +162,15 @@ def post():
     if request.method == "GET":
         return render_template("post.html")
     if request.method == "POST":
+        # Gets what the user has posted
         postContent = request.form.get("post-content")
+        # If there is no content to post flash user with error
         if not postContent:
             flash("Please put something to post")
             redirect("/post")
+        # Grabs time that the user made post
         time = datetime.now().strftime("%y-%m-%d %H:%M")
+        # Add post to database
         db.execute("INSERT INTO posts (user_id, post, date) VALUES (?, ?, ?)", session["user_id"], postContent, time)
         return redirect("/")
 
