@@ -1,5 +1,5 @@
 # CS:50 Final Basic Social Media App
-#### Video Demo:  <URL HERE>
+#### Video Demo:  https://www.youtube.com/watch?v=2QjU0_UcH_U
 #### Description:
   This is my final project for CS:50. It is basic web based social media app using Flask. 
 #### Reasons:
