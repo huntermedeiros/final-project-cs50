@@ -5,7 +5,27 @@
 {% endblock %}
 
 {% block main %}
-    <p>
-        home test
-    </p>
+    <div class="search-titles">
+        HOME
+    </div>
+    {% if session["user_id"] %}
+        {% if friendsposts %}
+            {% for posts in friendsposts %}
+                <div class="user-post">
+                    <a class="user-post-info" href="/user/{{ posts.username }}">
+                        <span class="user-post-name">{{ posts.name }}</span>
+                        <span class="user-post-username">@{{ posts.username }}</span>
+                        <span class="user-post-date">{{ posts.date }}</span>
+                    </a>
+                    <div class="user-post-main">
+                        <span>{{ posts.post }}</span>
+                    </div>
+                </div>   
+            {% endfor %}
+        {% else %}
+            <div style="padding-top: 5px;">No posts. Follow more people to view posts</div>
+        {% endif %}
+    {% else %}
+        <div style="padding-top: 5px;">Please sign in or register an account to view posts</div>
+    {% endif %}
 {% endblock main %}

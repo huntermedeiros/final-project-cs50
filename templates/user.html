@@ -1,29 +1,58 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    {{ userInfo['username'] }}
+    @{{ userInfo['username'] }}
 {% endblock %}
 
 {% block main %}
-    <p>username: {{ userInfo['username'] }}</p>
-    <p>name: {{ userInfo['name'] }}</p>
-    <p>following: {{ userInfo['following_count']}}</p>
-    <p>followers: {{ userInfo['follower_count'] }}</p>
 
-    {% if userPosts %}
-        {% for posts in userPosts %}
-            <p>{{ posts.post }}</p>
-            <p>{{ posts.date }}</p>
-        {% endfor %}
+    <div class="user-info-wrapper">
+        <div class="user-info">
+            <span class="user-name">{{ userInfo['name'] }}</span>
+            <span class="user-username">@{{ userInfo['username'] }}</span>
+            <div class="user-follow-wrapper">
+                <span class="user-follow-number">{{ userInfo['following_count'] }}</span>
+                <span class="user-follow">following</span>
+                <span class="user-follow-number">{{ userInfo['follower_count'] }}</span>
+                <span class="user-follow">followers</span>
+            </div>
+        </div>
+        <div class="user-follow">
+            {% if isFollowing %}
+                <a class="user-follow-button" href="/unfollow/{{ userInfo['username'] }}">
+                    <span class="user-follow-icon"><ion-icon name="person-remove-outline"></ion-icon></span>
+                    <span>Unfollow</span>
+                </a>
+            {% elif isFollowing == False %}
+                <a class="user-follow-button"href="/follow/{{ userInfo['username'] }}">
+                    <span class="user-follow-icon"><ion-icon name="person-add-outline"></ion-icon></span>
+                    <span>Follow</span>
+                </a>
+            {% endif %}
+        </div>
+    </div>
 
-    {% else %}
-        <p> This user has no posts</p>
-    {% endif %}
+    <div class="user-posts-wrapper">
+        <span class="search-titles">
+            POSTS
+        </span>
+        {% if userPosts %}
+            {% for posts in userPosts %}
+                <div class="user-post">
+                    <a class="user-post-info" href="/user/{{ userInfo['username'] }}">
+                        <span class="user-post-name">{{ userInfo['name'] }}</span>
+                        <span class="user-post-username">@{{ userInfo['username'] }}</span>
+                        <span class="user-post-date">{{ posts.date }}</span>
+                    </a>
 
-    {% if isFollowing %}
-        <a href="/unfollow/{{ userInfo['username'] }}">unfollow</a>
-    {% elif isFollowing == False %}
-        <a href="/follow/{{ userInfo['username'] }}">Follow</a>
-    {% endif %}
-
+                    <div class="user-post-main">
+                        <span class="user-post-content">{{ posts.post }}</span>
+                        
+                    </div>
+                </div>   
+            {% endfor %}
+        {% else %}
+            <span class="user-post">This user has no posts</span>
+        {% endif %}
+    </div>
 {% endblock main %}

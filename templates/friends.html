@@ -5,7 +5,25 @@
 {% endblock %}
 
 {% block main %}
+    <div class="search-titles">
+        FRIENDS
+    </div>
     {% for friends in friendsList %}
-        <a href="/user/{{ friends.username }}">@{{ friends.username }} | {{ friends.name }} </a>
-    {% endfor %}
+        <div class="search-user-info-wrapper">
+            <div class="search-user-info">
+                <a class="search-user-link" href="/user/{{ friends['username'] }}">
+                    <span class="search-user-name">{{ friends['name'] }}</span>
+                    <span class="search-user-username">@{{ friends['username'] }}</span>
+                </a>
+                <div class="search-user-following-info">
+                    <span class="user-follow-number">{{ friends['following_count'] }}</span>
+                    <span class="user-follow">following</span>
+                    <span class="user-follow-number">{{ friends['follower_count'] }}</span>
+                    <span class="user-follow">followers</span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    
+    
 {% endblock main %}

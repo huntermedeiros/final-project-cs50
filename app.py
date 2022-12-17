@@ -20,9 +20,12 @@ db = SQL("sqlite:///database.db")
 
 @app.route("/")
 def index():
-    return render_template("index.html", homeActive = True)
+    friendsposts = None
+    # Checks if user is logged in
+    if not session.get("user_id") is None:
+        friendsposts = db.execute("SELECT username, name, post, date FROM posts JOIN users ON users.id=posts.user_id JOIN following ON following.user_id=posts.user_id WHERE follower_id = ? ORDER BY date DESC", session["user_id"])
+    return render_template("index.html", friendsposts=friendsposts, homeActive = True, )
 
-# Users Page Implemented
 @app.route("/user/<username>")
 @login_required
 def user(username):
@@ -31,7 +34,7 @@ def user(username):
     if not userInfo:
         flash("User does not exist")
         return redirect("/")
-    userPosts = db.execute("SELECT * FROM posts WHERE user_id = ?", userInfo[0]['id'])
+    userPosts = db.execute("SELECT * FROM posts WHERE user_id = ? ORDER BY date DESC", userInfo[0]['id'])
     # Checks if this is the users account
     if username == session["username"]:
         isUsersAccount = True
@@ -45,7 +48,6 @@ def user(username):
             isFollowing = False
     return render_template("user.html", userInfo=userInfo[0], userPosts=userPosts, isUsersAccount=isUsersAccount, isFollowing=isFollowing)
 
-# follow implemented
 @app.get('/follow/<followed>')
 @login_required
 def follow(followed):
@@ -62,7 +64,6 @@ def follow(followed):
     db.execute("UPDATE users SET following_count = following_count + 1 WHERE id = ?", session["user_id"])
     return redirect(url_for("user", username=followedInfo["username"]))
 
-# unfollowed implemented
 @app.get('/unfollow/<unfollowed>')
 @login_required
 def unfollow(unfollowed):
@@ -82,7 +83,7 @@ def unfollow(unfollowed):
 @app.route("/friends")
 @login_required
 def friends():
-    friendsList = db.execute("SELECT username, name FROM users JOIN following ON users.id=following.user_id WHERE follower_id = ?", session["user_id"])
+    friendsList = db.execute("SELECT username, name, follower_count, following_count FROM users JOIN following ON users.id=following.user_id WHERE follower_id = ?", session["user_id"])
     return render_template("friends.html", friendsActive = True, friendsList=friendsList)
 
 @app.route("/liked")
@@ -90,14 +91,12 @@ def friends():
 def liked():
     return render_template("liked.html", likedActive = True)
 
-# Implemented Signout
 @app.route("/signout")
 @login_required
 def signout():
     session.clear()
     return redirect("/")
 
-# Implemented Login
 @app.post("/login")
 def login():
     session.clear()
@@ -115,9 +114,9 @@ def login():
         return redirect("/")
     session["user_id"] = rows[0]["id"]
     session["username"] = username
+    session["name"] = rows[0]['name']
     return redirect("/")
 
-# Implemented Register
 @app.post("/register")
 def register():
     username = request.form.get("username")
@@ -144,6 +143,7 @@ def register():
     currentUser = db.execute("INSERT INTO users (username, name, password_hash) VALUES (?, ?, ?)", username, name, password_hash)
     session["user_id"] = currentUser
     session["username"] = username
+    session["name"] = name
     return redirect("/")
 
 @app.route("/post", methods=["GET", "POST"])
@@ -153,17 +153,19 @@ def post():
         return render_template("post.html")
     if request.method == "POST":
         postContent = request.form.get("post-content")
-        time = datetime.now().strftime("%y-%m-%d %H:%M:%S")
+        if not postContent:
+            flash("Please put something to post")
+            redirect("/post")
+        time = datetime.now().strftime("%y-%m-%d %H:%M")
         db.execute("INSERT INTO posts (user_id, post, date) VALUES (?, ?, ?)", session["user_id"], postContent, time)
         return redirect("/")
 
 @app.route("/search")
 def search():
+    # Gets the arguments from the search bar
     search = request.args.get("search")
-    print(search)
-    resultsUsers = db.execute("SELECT username, name FROM users WHERE username LIKE ? OR name LIKE ?", "%" + search + "%", "%" + search + "%")
-    print(resultsUsers)
-    resultsPosts = db.execute("SELECT * FROM posts WHERE post LIKE ?", "%" + search + "%")
-    print(resultsPosts)
-
+    # Searches for all users that match the criteria of the search
+    resultsUsers = db.execute("SELECT username, name, follower_count, following_count FROM users WHERE username LIKE ? OR name LIKE ?", "%" + search + "%", "%" + search + "%")
+    # Searches for all of the posts that contain the criteria
+    resultsPosts = db.execute("SELECT username, name, post, date FROM posts JOIN users ON users.id=posts.user_id WHERE post LIKE ? ORDER BY date DESC", "%" + search + "%" )
     return render_template("search.html", resultsUsers=resultsUsers, resultsPosts=resultsPosts)

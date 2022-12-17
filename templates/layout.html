@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Name: {% block title %}{% endblock title %}</title>
+    <title>CS:50 Final Project: {% block title %}{% endblock title %}</title>
     <!-- Style sheet-->
     <link rel="stylesheet" href="/static/styles.css">
     <!-- Javascript for pages-->
@@ -22,7 +22,7 @@
             <button class="menu-button">
                 <ion-icon class="menu-button-icon" name="menu-outline"></ion-icon></ion-icon>
             </button>
-            <a class="logo" href="/">Logo</a>
+            <a class="logo" href="/">CS:50 Final Project</a>
         </div>
         
         <!-- Search bar -->
@@ -63,7 +63,7 @@
                     <span class="side-nav-icon"><ion-icon name="person"></ion-icon></span>
                     <div class="account-info-text">
                         <span class="side-nav-text">@{{ session["username"] }}</span>
-                        <span class="side-nav-text">name</span>
+                        <span class="side-nav-text">{{ session["name"] }}</span>
                     </div>
                 </a>
             </div>
@@ -87,11 +87,6 @@
                 <a class="side-nav-button {% if friendsActive %}active-button{% endif %}" href="/friends">
                     <span class="side-nav-icon"><ion-icon name="{% if friendsActive %}people{% else %}people-outline{% endif %}"></ion-icon></span>
                     <span class="side-nav-text">Friends</span>
-                </a>
-                <!-- Liked Button -->
-                <a class="side-nav-button {% if likedActive %}active-button{% endif %}" href="/liked">
-                    <span class="side-nav-icon"><ion-icon name="{% if likedActive %}heart{% else %}heart-outline{% endif %}"></ion-icon></span>
-                    <span class="side-nav-text">Liked</span>
                 </a>
             {% endif %}
 

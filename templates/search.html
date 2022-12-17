@@ -5,22 +5,51 @@
 {% endblock %}
 
 {% block main %}
-<div style="display: flex; flex-direction: column;">
+
+<div class="search-titles">
+    USERS
+</div>
+<div class="seach-users">
     {% if resultsUsers %}
         {% for users in resultsUsers %}
-            <a href="/user/{{ users.username }}">@{{ users.username }} | {{ users.name }}</a>
+        <div class="search-user-info-wrapper">
+            <div class="search-user-info">
+                <a class="search-user-link" href="/user/{{ users['username'] }}">
+                    <span class="search-user-name">{{ users['name'] }}</span>
+                    <span class="search-user-username">@{{ users['username'] }}</span>
+                </a>
+                <div class="search-user-following-info">
+                    <span class="user-follow-number">{{ users['following_count'] }}</span>
+                    <span class="user-follow">following</span>
+                    <span class="user-follow-number">{{ users['follower_count'] }}</span>
+                    <span class="user-follow">followers</span>
+                </div>
+            </div>
+        </div>
         {% endfor %}
 
     {% else %}
         <p> No users </p>
     {% endif %}
 </div>
-    
-<div>
+
+<div class="search-titles-2">
+    POSTS
+</div>
+<div class="search-posts-wrapper">
     {% if resultsPosts %}
         {% for posts in resultsPosts %}
-            <p>{{ posts.post }} </p>
-            <p>{{ posts.date }} </p>
+        <div class="user-post">
+            <a class="user-post-info" href="/user/{{ posts.username }}">
+                <span class="user-post-name">{{ posts.name }}</span>
+                <span class="user-post-username">@{{ posts.username }}</span>
+                <span class="user-post-date">{{ posts.date }}</span>
+            </a>
+
+            <div class="user-post-main">
+                <span>{{ posts.post }}</span>
+            </div>
+        </div>   
         {% endfor %}
 
     {% else %}

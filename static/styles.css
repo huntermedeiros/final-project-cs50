@@ -118,12 +118,13 @@ body {
 
 /* Login Options */
 .login-options {
+    min-width: 100px;
     padding: 10px;
 }
 
 .login-options-button {
     color: white;
-    text-decoration: none;
+    text-decoration: none; 
     padding: 5px;
     transition: 0.1s;
 }
@@ -137,7 +138,6 @@ body {
     grid-area: sidebar;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
 }
 
@@ -231,12 +231,6 @@ body {
 .side-nav-text {
     padding: 5px 5px 5px 20px;
     display: none;
-}
-
-/* Main Content */  
-main {
-    grid-area: main;
-    padding: 5px;
 }
 
 /* Login overlay */
@@ -363,4 +357,202 @@ main {
 
 .inactive {
     display: none;
+}
+
+/* Main Content */  
+main {
+    grid-area: main;
+    padding: 5px;
+}
+
+/* Users Page */
+.user-info-wrapper {
+    display: flex;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid var(--yellow-accent);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: 1.5rem;
+    margin: 0px 0px 5px 0px;
+}
+
+.user-username {
+    color: var(--gray5);
+    font-size: 1.2rem;
+    font-weight: lighter;
+    margin: 0px 0px 8px 0px;
+}
+
+.user-follow-wrapper {
+    display: flex;
+}
+
+.user-follow-number {
+    margin: 0px 5px 5px 0px;
+}
+
+.user-follow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--gray5);
+    font-weight: lighter;
+    margin: 0px 20px 5px 0px;
+}
+
+.user-follow-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    text-decoration: none;
+    background-color: var(--yellow-accent);
+    color: var(--gray1);
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.user-follow-button:hover {
+    background-color: var(--yellow-highlight);
+}
+
+.user-follow-icon {
+    display: flex;
+    justify-self: center;
+    align-items: center;
+    padding: 5px;
+}
+
+/* User Page - Posts */
+.user-posts-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.user-post {
+    padding: 10px 5px 10px 0px;
+    border-bottom: 1px solid #303030;
+}
+
+.user-post-info {
+    color: white;
+    text-decoration: none;
+}
+
+.user-post-info:hover .user-post-name{
+    text-decoration: underline;
+}
+
+.user-post-name {
+    color: white;
+    font-weight: lighter;
+}
+
+.user-post-username {
+    color: var(--gray5);
+}
+
+.user-post-main {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2px;
+}
+
+.user-post-date {
+    margin-left: 20px;
+    color: var(--gray5);
+    font-size: 14px;
+    font-weight: lighter;
+}
+
+/* Search Page */
+.search-titles {
+    font-size: 22px;
+    font-weight: lighter;
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--yellow-accent);
+}
+
+.search-titles-2 {
+    font-size: 22px;
+    font-weight: lighter;
+    padding-top: 30px;
+    padding-bottom: 2px;
+    border-bottom: 1px solid var(--yellow-accent);
+}
+
+.search-user-info-wrapper {
+    padding: 5px 0px 5px 0px;
+    border-bottom: 1px solid #303030;
+}
+
+.search-user-info {
+    display: flex;
+    align-items: center;
+}
+
+.search-user-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    padding-right: 40px;
+}
+
+.search-user-link:hover .search-user-name {
+    text-decoration: underline;
+}
+
+.search-user-name {
+    color: white;
+}
+
+.search-user-username {
+    color: var(--gray5)
+}
+
+.search-user-following-info {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+}
+
+/* Posting */
+.post-form {
+    display: flex;
+    align-items: center;
+}
+
+.post-input {
+    width: 25%;
+    background-color: var(--gray1);
+    color: white;
+    padding: 10px 10px 50px 10px;
+    border: 1px solid var(--gray4);
+    border-radius: 4px;
+}
+
+.post-input:focus {
+    outline: none;
+    border: 1px solid #1c62b9;
+}
+
+.post-submit {
+    margin-left: 10px;
+    padding: 10px;
+    background-color: var(--yellow-accent);
+    color: var(--gray1);
+    border: none;
+    border-radius: 10px;
+}
+
+.post-submit:hover {
+    background-color: var(--yellow-highlight);
 }
