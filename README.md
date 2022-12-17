@@ -48,13 +48,13 @@
   - This is shown after the user has entered something into the search bar at the top of the page.
   - Takes information from the database to find any users or posts that contain the same words that the user entered.
   - A feature that I would like to add at a later date is to only show a max of three users with the ability to see more based on the words that the user searched.
-##### Static
+##### Static:
 - scripts.js
   - This holds all of the javascript for the layout.
   - It handles the ability to open and close the side nav bar as well as opening the register and sign in prompts.
 - styles.css
   - Handles all css for app.
-##### App
+##### App:
 - This is the flask app that handles all of the main fuctionality of the application.
 - Most of it is explained in the file.
 
